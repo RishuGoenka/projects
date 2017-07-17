@@ -1,0 +1,70 @@
+<html>
+<body>
+
+
+    <table border="1" width="100%">
+            <thead>
+                    <tr>
+                        <td><input type='checkbox' /></td>
+                            <td>Row 1, cell 2</td>
+                            <td>Row 2, cell 3</td>
+                    </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                            <td><input type='checkbox' /></td>
+                            <td>Row 2, cell 2</td>
+                            <td>Row 2, cell 3</td>
+                    </tr>
+                    <tr>
+                            <td><input type='checkbox' /></td>
+                            <td>Row 3, cell 2</td>
+                            <td>Row 3, cell 3</td>
+                    </tr>
+                    <tr>
+                            <td><input type='checkbox' /></td>
+                            <td>Row 4, cell 2</td>
+                            <td>Row 4, cell 3</td>
+                         <tr>
+                            <td><input type='checkbox' /></td>
+                            <td>Row 4, cell 2</td>
+                            <td>Row 4, cell 3</td>
+                    </tr>
+                    </tr>
+            </tbody>
+    </table>
+    <input id="btn" type="button" label="button" value="get rows" />
+
+<script>
+
+
+
+    $("#btn").on("click", function () {
+        var checkedRows = [];
+        $("#tbody tr").each(function () {
+
+            if ($(this).find("input").is(":checked")) {
+                checkedRows.push($(this).find("td:eq(1)").html());
+            }
+            // console.log(checkedRows);    
+        });
+
+            var result = [];
+
+        $.each($("td:eq()"), function (idx, item) {
+            if (checkedRows.indexOf(idx> -1)){ result.push(item);}
+        });
+
+        if (result.length < 2) {
+            alert("Please Select 2 to 4 Models");
+        }
+        if (result.length > 4) {
+            alert("Please Select 2 to 4 Models");
+        } else {
+            console.log(result);
+        }
+        });
+</script>
+	<script src="js/jquery.min.js"></script>
+</body>
+</html>

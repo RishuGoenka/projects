@@ -1,0 +1,118 @@
+public class ListUserController extends AbstractController {
+
+	private UserDAO dao;
+	
+	@Override
+	protected ModelAndView handleRequestInternal(HttpServletRequest arg0,
+			HttpServletResponse arg1) throws Exception {
+		ModelAndView mv = new ModelAndView("list");
+		//Store list of users with key "users"
+		mv.addObject("users", dao.getUsers());
+		//And send it to view page "list"
+		return mv;
+	}
+
+
+	public void setDao(UserDAO dao) {
+		this.dao = dao;
+	}
+
+}
+Create new JSP Page inside views folder "list.jsp"
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<html>
+<head>
+<title>List of Users</title>
+</head>
+<body>
+<h2>List of users </h2>
+<table>
+<tr>
+	<th>Name </th>
+	<th>EMail ID</th>
+	<th>Gender</th>
+	<th>&nbsp;</th>
+</tr>
+<c:forEach items="${users }" var="u">
+	<tr>
+		<td>${u.userName }</td>
+		<td>${u.email }</td>
+		<td>${u.gender }</td>
+		<td>
+			<a href="edit-user.htm?name=${u.userName}">Edit</a>
+			<a href="remove-user.htm?name=${u.userName}">Remove</a>
+		</td>
+	</tr>
+</c:forEach>
+</table>
+</body>
+</html>
+
+Add new link inside index.html
+	<a href="list-users.htm">list all</a>
+
+Add new bean inside "dispatcher-servlet.xml"
+	<bean name="/list-users.htm"
+		class="com.mahendra.demo1.controllers.ListUserController">
+			<property name="dao" ref="dao"/>
+	</bean>
+
+Add method "findByName" inside UserDAO
+public User findByName(String name){
+		User user = null;
+		for(int i=0;i<users.size();i++){
+			if(users.get(i).getUserName().equalsIgnoreCase(name)){
+				user = users.get(i);
+				break; //stop next search
+			}
+		}
+		return user;
+	}	
+Add method "update" inside UserDAO
+	public void update(User user){
+		User target = findByName(user.getUserName());
+		if(target==null){
+			throw new RuntimeException("No record found!");
+		}
+		target.setPassword(user.getPassword());
+		target.setEmail(user.getEmail());
+		target.setGender(user.getGender());
+	}
+Create new controller "EditUserController"
+public class EditUserController extends SimpleFormController {
+	private UserDAO dao;
+	
+	@Override
+	protected ModelAndView onSubmit(Object command, BindException errors)
+			throws Exception {
+		//call method to edit
+		User user = (User)command;
+		dao.update(user);
+		return new ModelAndView(getSuccessView());
+	}
+
+	@Override
+	protected ModelAndView showForm(HttpServletRequest request,
+			HttpServletResponse response, BindException errors)
+			throws Exception {
+		String name = request.getParameter("name");
+		User user = dao.findByName(name);
+		ModelAndView mv = new ModelAndView(getFormView());
+		mv.addObject("user", user);
+		return mv;
+	}
+
+	public void setDao(UserDAO dao) {
+		this.dao = dao;
+	}
+}
+define additional bean inside dispatcher-servlet.xml
+<bean name="/edit-user.htm" 
+		class="com.mahendra.demo1.controllers.EditUserController">
+		<property name="dao" ref="dao" />
+		<property name="commandClass" value="com.mahendra.demo1.model.User"/>
+		<property name="commandName" value="user"/>
+		<property name="validator" ref="userValidator"/>
+		<property name="successView" value="redirect:/list-users.htm" />
+		<property name="formView" value="form"/>
+</bean>

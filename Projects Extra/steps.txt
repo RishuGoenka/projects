@@ -1,0 +1,172 @@
+1. Import MVCDemo1
+2. Refactor -> rename to MVCDemo4
+2. Add new jar "jstl1.2.jar"
+3. Add new java class "com.mahendra.demo1.model.User"
+  add following instance variables:
+	private String userName;
+	private String password;
+	private String gender;
+	private String email;
+4. generate Getters/Setters for all above fields
+5. Add new java class "com.mahendra.demo1.data.UserDAO"
+	Add following instance variable:
+		private List<User> users;
+	Create Setter method for above field
+	Add new method:
+		public void add(User user){
+			users.add(user);
+			System.out.println("New user added");
+		}
+6. Add new folder "views" inside "WEB-INF" folder
+7. Open "applicationContext.xml" from WEB-INF
+	and add following lines:
+	<bean id="dao"
+		class="com.mahendra.demo1.data.UserDAO">
+	<property name="users">
+		<list>
+			<bean class="com.mahendra.demo1.model.User">
+	 		 <property name="userName" value="rishu" />
+			 <property name="password" value="terminator2"/>
+			 <property name="email" value="rishu@mozilla.com"/>
+			 <property name="gender" value="male" />
+			</bean>
+			<bean class="com.mahendra.demo1.model.User">
+			 <property name="userName" value="raj" />
+			 <property name="password" value="hey mogambo!"/>
+			 <property name="email" value="raj@mozilla.com" />
+			 <property name="gender" value="male" />
+			</bean>
+		</list>
+	</property>
+	</bean>
+8. Create JSP page "form.jsp" inside WEB-INF/views folder:
+	<%@ taglib 
+		uri="http://www.springframework.org/tags/form" 
+		prefix="sf" %>
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" 
+		prefix="c" %>
+	<sf:form action="register-user.htm" method="post" 
+			modelAttribute="user">
+		Your name: <sf:input path="userName" /><br/>
+		Gender : <sf:radiobutton path="gender" 
+			label="Male" value="male"/>
+			<sf:radiobutton path="gender" 
+			label="Female" value="female"/><br/>
+		email : <sf:input path="email"/><br/>
+		password : <sf:password path="password"/><br/>
+		<input type="submit" value="register"/>
+	</sf:form>
+9.	Create JSP page "success.jsp" inside WEB-INF/views folder:
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+	<h2>${msg }</h2>
+10.	Create new java class "RegisterUserController"
+		from super class "AbstractFormController"
+		under package 'com.mahendra.demo1.controllers'
+			
+			add following lines inside "processFormSubmission" method
+				ModelAndView mv = null;
+				if(arg2 instanceof User){
+					User user = (User) arg2;			
+					//Call validator
+					dao.add(user);
+					mv = new ModelAndView("success");
+					mv.addObject("msg", "User "+user.getUserName()+" now registered");			
+				}
+				return mv;
+		In same class add following code inside
+		method "showForm"
+					User user = new User();
+					ModelAndView mv = new ModelAndView("form");
+					//must MATCH with modelAttribute in form page
+					mv.addObject("user", user); 
+					return mv;
+		Finally, add variable and setter:
+			private UserDAO dao;
+			public void setDao(UserDAO dao) {
+				this.dao = dao;
+			}
+11.	Open "dispatcher-servlet.xml" file, add following
+		beans:
+		<bean name="/register-user.htm" 
+			class="com.mahendra.demo1.controllers.RegisterUserController">
+			<property name="dao" ref="dao" />
+			<property name="commandClass" value="com.mahendra.demo1.model.User"/>
+		</bean>
+	
+		<bean id="resolver" 
+			class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+			<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+			<property name="prefix" value="/WEB-INF/views/" />
+			<property name="suffix" value=".jsp" />	
+		</bean>
+12.	Right click on 'WebContent' folder --> create HTML file
+		'index.html' : 
+		<a href="register-user.htm">register now!!</a>
+		
+		Try to run "index.html" file .... 
+
+		
+13. Create new Class "UserValidator" which should implement
+			Validator interface from spring
+			
+			package com.mahendra.demo1.model;
+
+import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
+import org.springframework.validation.Validator;
+
+public class UserValidator implements Validator {
+
+	@Override
+	public boolean supports(Class<?> arg0) {
+		//If Instance of arg0 can be assigned to variable of Type User
+		//Then this validator can validate it
+		// SIMPLE WORDS: Any class inherited from User 
+		return arg0.isAssignableFrom(User.class);
+		
+		//VALIDATE ONLY User class and not derived one's
+		// return User.class.equals(arg0);
+	}
+
+	@Override
+	public void validate(Object arg0, Errors arg1) {
+		User user = (User)arg0; //TypeCast target instance into User type 
+		
+		//Using Util methods to generated 'FieldErrors'
+		ValidationUtils.rejectIfEmptyOrWhitespace
+			(arg1, "userName", "empty.username","Please enter username");
+		ValidationUtils.rejectIfEmptyOrWhitespace(arg1, "password", "empty.password",
+				"Please enter password");
+		
+		//Manually generated errors
+		if(user.getPassword().trim().length()<8){
+			arg1.rejectValue("password", "invalid.password", "At least 8 characters in password");
+		}
+		
+	}
+
+}
+
+14. Open dispatcher-servlet.xml add new bean:
+		<bean id="userValidator" 
+			class="com.mahendra.demo1.model.UserValidator" />
+		Add property inside "/register-user.htm" bean
+			<property name="validator" ref="userValidator"/>
+			<property name="validateOnBinding" value="true"/>
+			
+15. Modify form.jsp to include errors tag
+<sf:errors/>
+<sf:form action="register-user.htm" method="post" modelAttribute="user">
+	Your name: <sf:input path="userName" />
+			<sf:errors path="userName"/>
+	<br/>
+	Gender : <sf:radiobutton path="gender" label="Male" value="male"/>
+			<sf:radiobutton path="gender" label="Female" value="female"/>
+			<br/>
+	email : <sf:input path="email"/>
+			<sf:errors path="email"/>
+	<br/>
+	password : <sf:password path="password"/>
+			<sf:errors path="password"/><br/>
+	<input type="submit" value="register"/>
+</sf:form>

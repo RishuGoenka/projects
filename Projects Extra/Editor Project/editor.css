@@ -1,0 +1,59 @@
+
+#Header{
+position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	width: 100%;
+	background: skyblue;
+}
+#editortext {
+	position: absolute;
+	top: 4%;
+	bottom: 3%;
+	right: 0;
+	left: 0;
+	width: 50%;
+}
+#editor {
+	position: absolute;
+	top: 4%;
+	bottom: 6%;
+	left: 50%;
+	right: 0;
+	width: 50%;
+}
+#java {
+	position: absolute;
+	top: 94%;
+	right: 0;
+	bottom: 0;
+	left: 50%;
+}
+#completion {
+	position: absolute;
+	top: 94%;
+	right: 0;
+	bottom: 0;
+	left: 52.6%;
+	width: 44%;
+	background: brown;
+}
+#submit {
+	position: absolute;
+	top: 94%;
+	right: 0;
+	bottom: 0;
+	left: 96.5%;
+}
+
+#Footer{
+position: absolute;
+	top: 96.5%;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	width: 100%;
+	background: green;
+}

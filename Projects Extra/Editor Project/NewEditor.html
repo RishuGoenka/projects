@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Editer</title>
+<meta name="description"
+	content="Source code generated using layoutit.com">
+<meta name="author" content="LayoutIt!">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+<style type="text/css" media="screen">
+#questionfield {
+	height: 700px;
+}
+
+#editor {
+	height: 700px;
+}
+</style>
+</head>
+<body>
+
+	<div class="container-fluid">
+		<!-- ------------------------------------------------------Header-------------------------------------- -->
+		<div class="row">
+			<div class="col-md-12">
+				<nav class="navbar navbar-default navbar-inverse" role="navigation">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse"
+							data-target="#bs-example-navbar-collapse-1">
+							<span class="sr-only">Toggle navigation</span><span
+								class="icon-bar"></span><span class="icon-bar"></span><span
+								class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="#">LOGO</a>
+					</div>
+					<div class="collapse navbar-collapse"
+						id="bs-example-navbar-collapse-1">
+						<ul class="nav navbar-nav navbar-left">
+							<li><a href="#">Home</a></li>
+							<li class="dropdown"><a href="#" class="dropdown-toggle"
+								data-toggle="dropdown">Dropdown<strong class="caret"></strong></a>
+								<ul class="dropdown-menu">
+									<li><a href="#">About</a></li>
+									<li><a href="#">Another action</a></li>
+									<li><a href="#">Something else here</a></li>
+								</ul></li>
+						</ul>
+						<ul class="nav navbar-nav navbar-right">
+							<li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+							<li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+						</ul>
+					</div>
+				</nav>
+			</div>
+		</div>
+		<!-- ------------------------------------------------------Body------------------------------------------ -->
+		<div class="row">
+			<!-- ------------------------------------------------Question Part--------------------------------------- -->
+			<div class="col-md-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<div id="questionfield"></div>
+					</div>
+					<div class="panel-body">
+						<div class="btn-group">
+							<button class="btn btn-primary" id="previous"
+								onclick="preFunction()">Previous</button>
+						</div>
+						<div style="float: right" class="btn-group">
+							<button class="btn btn-primary" id="next" onclick="nexFunction()">Next</button>
+						</div>
+					</div>
+				</div>
+				<script src="ace-builds/src-noconflict/ace.js"
+					type="text/javascript" charset="utf-8"></script>
+				<script>
+					var questionprevious = "Previous Question";
+					var questionnext = "next Question";
+					var questionfield = ace.edit("questionfield");
+					questionfield.setTheme("ace/theme/textmate");
+					questionfield.getSession().setMode("ace/mode/text");
+					questionfield.setReadOnly(true);
+					questionfield.renderer.setShowGutter(false);
+					questionfield.setShowPrintMargin(false);
+					questionfield.setHighlightActiveLine(false);
+
+					function preFunction() {
+					questionfield.setValue(questionprevious);
+					}
+					function nexFunction() {
+					questionfield.setValue(questionnext);
+					}
+				</script>
+			</div>
+			<!-- ------------------------------------------------------Editor-------------------------------------- -->
+			<div class="col-md-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<div id="editor"><pre>
+public class Main {
+
+	public static void main(String[] args) {
+		// To Write Codes
+
+	}
+
+}</pre>					</div>
+					</div>
+					<div class="panel-body">
+						<div class="text-right">
+							<select class="selectpicker" data-style="btn-primary" style="float: left">
+							<option>Java</option>
+							<option>C</option>
+							<option>C++</option>
+							</select>
+								<button class="btn btn-success" id="submit"
+									onclick="editFunction()">Submit</button>
+						</div>
+
+					</div>
+					<script src="ace-builds/src-noconflict/ace.js"
+						type="text/javascript" charset="utf-8"></script>
+					<script>
+						var editor = ace.edit("editor");
+						editor.setTheme("ace/theme/terminal");
+						editor.getSession().setMode("ace/mode/java");
+						editor.setShowPrintMargin(false);
+
+						function editFunction() {
+							var code = editor.getValue();
+							alert(code);
+						}
+					</script>
+				</div>
+			</div>
+			<!-- ------------------------------------------------------Footer-------------------------------------- -->
+			<div class="row">
+				<div class="col-md-12">
+					 <div class="progress">
+    <div class="progress-bar  progress-bar-success progress-bar-striped active" role="progressbar" 
+	aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+    </div>
+  </div>
+				</div>
+				<div class="col-md-12">
+					<div class="container">
+						<div class="row">
+							<div class="col-lg-8 col-lg-offset-2 text-center">
+								<h2 class="section-heading">Let's Get In Touch!</h2>
+								<hr class="primary">
+								<p>Ready to start your next project with us? That's great!
+									Give us a call or send us an email and we will get back to you
+									as soon as possible!</p>
+							</div>
+							<div class="col-lg-4 col-lg-offset-2 text-center">
+								<i class="fa fa-phone fa-3x sr-contact"></i>
+								<p>987-654-3210</p>
+							</div>
+							<div class="col-lg-4 text-center">
+								<i class="fa fa-envelope-o fa-3x sr-contact"></i>
+								<p>
+									<a href="mailto:your-email@your-domain.com">feedback@feedback.com</a>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="js/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/scripts.js"></script>
+</body>
+</html>
