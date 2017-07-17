@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.zycus.entity">
+	<class name="PMovies" table="tbl_movies1783">
+        <id name="id" column="movie_id"> <!-- Primary Key -->
+            <generator class="increment"/>
+        </id>
+        
+        <!-- remaining columns of the table -->
+        <property name="movieName" column="movie_name"/>
+        <property name="medium" column="movie_medium"/>
+        <property name="dateStartsFrom" column="movie_dateStartsFrom"/>
+        <property name="dateEnds" column="movie_dateEnds"/>
+        
+        <!-- Associations -->
+        <bag name="movieShows" cascade="all">
+        	<key column="movie_id"/>
+        	<one-to-many class="PMovieShows"/>
+        </bag>
+        
+        <bag name="bookings" cascade="all" inverse="true">
+        	<key column="movie_id"/>
+        	<one-to-many class="PBooking"/>
+        </bag>
+        
+        
+    </class>
+    
+</hibernate-mapping>

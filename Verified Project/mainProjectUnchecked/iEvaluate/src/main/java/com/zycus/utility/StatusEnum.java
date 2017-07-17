@@ -1,0 +1,4 @@
+package com.zycus.utility;
+public enum StatusEnum {
+	TLE, COMPILE_ERROR, RUNTIME_ERROR, RUNTIME_SUCCESS, COMPILE_SUCCESS, RUN_ERROR, RUN_SUCCESS
+}

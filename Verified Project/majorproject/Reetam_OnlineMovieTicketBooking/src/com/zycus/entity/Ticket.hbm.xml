@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.zycus.entity">
+	<class name="PTicketRate" table="tbl_ticketRate1783">
+        <id name="id" column="ticket_id"> <!-- Primary Key -->
+            <generator class="increment"/>
+        </id>
+        
+        <!-- remaining columns of the table -->
+        <property name="valueOfBooking" column="ticket_valueOfBooking"/>
+        <property name="seatType" column="ticket_seatType"/>
+        <property name="totalSeats" column="ticket_totalSeats"/>
+        
+        <!-- Associations -->
+        <many-to-one name="screen" column="screen_id" not-null="true"/>
+        
+    </class>
+    
+</hibernate-mapping>

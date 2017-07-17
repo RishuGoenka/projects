@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.zycus.entity">
+	<class name="PShowTime" table="tbl_showtime1783">
+        <id name="id" column="show_time_id"> <!-- Primary Key -->
+            <generator class="increment"/>
+        </id>
+        
+        <!-- remaining columns of the table -->
+        <property name="showTime" column="show_time"/>
+        
+        <!-- Associations 
+        <many-to-one name="screen" column="screen_id" not-null="true"/>
+        -->
+        
+    </class>
+    
+</hibernate-mapping>
